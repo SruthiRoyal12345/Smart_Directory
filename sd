@@ -1,0 +1,56 @@
+#!/usr/bin/env bash
+
+if [ $# -eq 0 ]
+then
+    cd /home/$USER
+
+else
+    if [ "$1" == ".." ]
+    then
+        cd ..
+
+    elif [ "$1" == "-fd" ]
+    then 
+        find $(pwd) -type d -name $2
+
+    elif [ "$1" == "-fda" ]
+    then
+        find /home/$USER -type d -name $2
+
+    elif [ "$1" == "-ff" ]
+    then
+        find $(pwd) -type f -name $2
+
+    elif [ "$1" == "-ffa" ]
+    then
+        find /home/$USER -type f -name $2
+
+    elif [ "$1" == "-l" ]
+    then
+        tree -L 1 $(pwd)
+
+    elif [ "$1" == "-la" ]
+    then
+        tree $(pwd)
+
+    else
+        if [ -d $(pwd)/$1 ]
+        then 
+            cd $(pwd)/$1
+        else
+            read -r -p "the directory does not exist do you want to create new one named $1[y/n]: " response
+            case "$response" in
+                [yY])
+                    echo "creating directory $1..."
+                    mkdir $(pwd)/$1
+                    cd $(pwd)/$1
+                    ;;
+                *)
+                    echo "Operation cancelled...." 
+                    echo "exiting"
+                    ;;
+            esac
+        fi
+    fi
+fi
+
